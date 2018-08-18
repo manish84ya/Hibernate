@@ -1,0 +1,363 @@
+package com.BugTracking;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+import javax.print.attribute.standard.Severity;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+
+public class TestMainProgram {
+	static AnnotationConfiguration cfg=new AnnotationConfiguration().configure();
+	static SessionFactory sf=cfg.buildSessionFactory();
+	public static void main(String[] args) throws ParseException
+	{
+		saveRecord();
+		//UpdateRecord();
+		//DeleteRecord();
+		//GetRecord();
+	}
+	public static void saveRecord() throws ParseException
+	{
+		Session s=sf.openSession();
+		Transaction t=s.beginTransaction();
+		
+		System.out.println("Admin Details");
+		
+		/*Admin Informations*/
+		Admin admin=new Admin();
+		admin.setAdminId(1001l);
+		admin.setAdminCompanyName("Its Your Choice");
+		admin.setAdminEmailId("Its@gmail.com");
+		admin.setAdminName("Manish");
+		
+		/*Project Information */
+		Projects project=new Projects();
+		project.setProjectId(2l);
+		project.setProjectTitle("Calculator App");
+		project.setProjectOverview("Its A Calculator");
+		String startDate = "May 22, 2018";
+		project.setStartDate(startDate);
+		String EndDate = "May 30, 2018";
+		project.setEndDate(EndDate);
+		Set pro=new HashSet<>();
+		pro.add(project);
+		admin.setProjectses(pro);
+		
+		
+		/*User Information Insertion*/
+		/*First User*/
+		User user=new User();
+		user.setUserId(1l);
+		user.setUsername("Chintu");
+		user.setUserPassword("975273");
+		user.setFirstName("Tanmay");
+		user.setLastName("Chaurasiya");
+		user.setUserDesignation("Employee");
+		String doj="May 12,2017";
+		user.setDateOfJoining(doj);
+		
+		User user1=new User();
+		user1.setUserId(2l);
+		user1.setUsername("Pintu");
+		user1.setUserPassword("9752698");
+		user1.setFirstName("Anurag");
+		user1.setLastName("Chaurasiya");
+		user1.setUserDesignation("Employee");
+		String doj1="May 15,2015";
+		user.setDateOfJoining(doj1);
+		Set us=new HashSet<>();
+		us.add(user);
+		us.add(user1);
+		project.setUsers(us);
+		//admin.setAdminUser(us);
+		
+		
+		Milestone task1=new Milestone();
+		task1.setMileStoneId(1l);
+		task1.setTaskName("Perform Calculation");
+		task1.setTaskAssignDate("June 15,2017");
+		task1.setTaskEndDate("June 25,2017");
+		task1.setMilestoneFlag("Internal");
+		task1.setMilestoneStatus("Assign");
+		
+		Milestone task2=new Milestone();
+		task2.setMileStoneId(2l);
+		task2.setTaskName("Perform Multiplication");
+		task2.setTaskAssignDate("June 16,2017");
+		task2.setTaskEndDate("June 26,2017");
+		task2.setMilestoneFlag("Internal");
+		task2.setMilestoneStatus("Assign");
+		Set AssignMile1=new HashSet<>();
+		Set AssignMile2=new HashSet<>();
+		AssignMile1.add(user);
+		AssignMile2.add(user1);
+		
+		/*It Assign MileStone To A User*/
+		task1.setUsers(AssignMile1);
+		task2.setUsers(AssignMile2);
+		
+		Set projectmilestone=new HashSet<>();
+		
+		projectmilestone.add(task1);
+		projectmilestone.add(task2);
+		
+		project.setMilestones(projectmilestone);
+		
+		/*MileStone 1 Can Have A Bug*/
+		
+		Bug bug=new Bug();
+		bug.setBugId(1l);
+		bug.setBugTitle("Exception In Calculation");
+		bug.setBugDescription("At the time of calculation its get exception");
+		bug.setDueOn("2018-06-15");
+		bug.setFixId(0l);
+		Set bg=new HashSet<>();
+		bg.add(bug);
+		task1.setBugs(bg);
+		user.setBugs(bg);
+		//////////////////////////////////
+		/*MileStone 1 Can Have A Bug*/
+		/****************************************************************************************************/
+		Bug bug1=new Bug();
+		bug1.setBugId(2l);
+		bug1.setBugTitle("Exception In Multiplication");
+		bug1.setBugDescription("At the time of Multiplication its get exception");
+		bug1.setDueOn("2018-06-16");
+		bug1.setFixId(00l);
+		Set bg1=new HashSet<>();
+		bg1.add(bug1);
+		task2.setBugs(bg1);
+		user1.setBugs(bg1);
+			
+	//////////////////////////////////////	
+		/*Severity for BUG 1...............    */
+		//Severity set minor,major,critical
+		
+		
+		
+		Severity sev=new Severity(1);
+		
+		
+		
+		sev.setSeverity_ID(153l);
+		sev.setBug_Type("Minor");
+		sev.setParentbug(bug);
+		//Bug Status is open,progress,closed,tested
+		Status_Of_Bug sob=new Status_Of_Bug();
+		sob.setBug_Status_ID(154l);
+		sob.setStatus_Of_Bug_is("Open");
+		sob.setBugStatus(bug);
+	///////////////////////////////////////////////
+		/*Severity for BUG 2...............    */
+		//Severity set minor,major,critical
+		SeverityDTO sev1=new SeverityDTO();
+		sev1.setSeverity_ID(154l);
+		sev1.setBug_Type("Minor");
+		sev1.setParentbug(bug1);
+		//Bug Status is open,progress,closed,tested
+		Status_Of_Bug sob1=new Status_Of_Bug();
+		sob1.setBug_Status_ID(155l);
+		sob1.setStatus_Of_Bug_is("Open");
+		sob1.setBugStatus(bug1);
+	///////////////////////////////////////////////
+		
+		
+		/*Affected Milestone for bug1*/	
+		/*Affected MileStone */
+		AffectedMileStoneBug af=new AffectedMileStoneBug();
+		af.setAffectedMileStoneID(154782l);
+		af.setMileStoneName("Design User SignUp Page");
+		af.setBugAffected(bug);
+		af.setMilestoneAffected(task1);
+		/////////////////////////////////
+
+		/*Affected Milestone for bug2*/	
+		/*Affected MileStone */
+		AffectedMileStoneBug af1=new AffectedMileStoneBug();
+		af1.setAffectedMileStoneID(154783l);
+		af1.setMileStoneName("Design User SignIn Page");
+		af1.setBugAffected(bug1);
+		af1.setMilestoneAffected(task2);
+		/////////////////////////////////
+		
+		
+		
+		
+		
+		/*Classifiaction Or Exception Or Problem*/
+		//security,crasg/hang,data loss,performance,ui/usability,other bug,feature(new),enhancement
+
+		ClassificationDTO cl=new ClassificationDTO();
+		cl.setClassification_id(45871l);
+		cl.setClassification_Type("performance");
+		cl.setParentClassification(bug);
+		////////////////////////////////////////////////////////////////
+
+		/*Classification of bug2*/
+		/*Classifiaction Or Exception Or Problem*/
+		//security,crasg/hang,data loss,performance,ui/usability,other bug,feature(new),enhancement
+
+		ClassificationDTO cl1=new ClassificationDTO();
+		cl1.setClassification_id(45872l);
+		cl1.setClassification_Type("performance");
+		cl1.setParentClassification(bug1);
+		////////////////////////////////////////////////////////////////
+		
+		/* Reproducible*/
+		/* always,sometimes,rarely,unable,never tried,not applicable */
+		Reproducible rp=new Reproducible();
+		rp.setReproduce_ID(458796l);
+		rp.setIs_It_Reproducible("Always");
+		rp.setBugReproducible(bug);
+		////////////////////////////////////////////////////////////////////
+		/*bug 2*/
+		/* Reproducible*/
+		/* always,sometimes,rarely,unable,never tried,not applicable */
+		Reproducible rp1=new Reproducible();
+		rp1.setReproduce_ID(458797l);
+		rp1.setIs_It_Reproducible("Always");
+		rp1.setBugReproducible(bug1);
+		////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		/*Set Flag Like Internal or External*/
+		FlagDTO flag=new FlagDTO();
+		flag.setFlag_ID(82541l);
+		flag.setFlag_Type("Internal");
+		flag.setBugFlag(bug);
+		////////////////////////////////////////////////////////////////////
+		/*bug 2*/
+		/*Set Flag Like Internal or External*/
+		FlagDTO flag1=new FlagDTO();
+		flag1.setFlag_ID(82542l);
+		flag1.setFlag_Type("Internal");
+		flag1.setBugFlag(bug1);
+		////////////////////////////////////////////////////////////////////
+		/**/
+		/*Resolution res=new Resolution();
+		res.setResolution_ID(4521l);
+		res.setBug_Resolution("Closed");
+		res.setBugResolution(bug);
+		*//*bug 2*/
+
+		/*Resolution res1=new Resolution();
+		res1.setResolution_ID(4522l);
+		res1.setBug_Resolution("Closed");
+		res1.setBugResolution(bug1);
+		*/
+		///////////////////////////////////////////
+		/*Event Create By Admin*/
+		EventDTO event=new EventDTO();
+		event.setEvent_ID(123l);
+		event.setEvent_Title("Project Completion Party");
+		event.setLocation("Chappan");
+		
+		
+		
+		
+		Date d = new Date();
+		long t15 = d.getTime();
+		Timestamp time = new Timestamp(t15);
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		
+		event.setSchedule_On_Date((format.parse("29/05/2018")));
+		event.setStart_Time("7:00 PM");
+		event.setDuration("2 hr");
+		
+		Set EventByAdmin=new HashSet<>();
+		EventByAdmin.add(event);
+		
+		admin.setAdminEvent(EventByAdmin);
+		/*By User Event*/
+		
+		EventDTO event1=new EventDTO();
+		event1.setEvent_ID(124l);
+		event1.setEvent_Title("Birth Day Party");
+		event1.setLocation("Raddison");
+		event1.setSchedule_On_Date((format.parse("28/05/2018")));
+		event1.setStart_Time("8:00 PM");
+		event1.setDuration("2 hr");
+		Set EventByUser=new HashSet<>();
+		EventByUser.add(event1);
+		user.setUserEvent(EventByUser);
+		
+	    /////////////////////////////////////////////
+		
+		/*MileStone Comment*/
+		MileStoneCommentDTO msc=new MileStoneCommentDTO();
+		msc.setComment_ID(1236l);
+		msc.setComment("Nice Work");
+		Set s1=new HashSet<>();
+		s1.add(msc);
+		user.setUserMileStoneComment(s1);
+		task1.setMileStoneComm(s1);
+		
+		/*Bug Comment*/
+		BugCommentDTO bg2=new BugCommentDTO();
+		bg2.setCommentID(789l);
+		bg2.setComment("Well Done");
+		Set BugComment=new HashSet<>();
+		BugComment.add(bg2);
+		user.setUserBugComment(BugComment);
+		bug.setBugCommnet(BugComment);
+		
+		/*
+		BugFixer bx=new BugFixer();
+	//	bx.setBugFixer_id(1l);
+		bx.setBugStatus(sob);
+		bx.setFixbug(user);
+		
+		s.save(bx);
+		
+		*/
+		
+		
+		s.save(admin);
+		s.save(task1);
+		s.save(task2);
+		s.save(sev);
+		s.save(sob);
+		s.save(af);
+		s.save(cl);
+		s.save(rp);
+		s.save(flag);
+		//s.save(res);
+		
+		s.save(sev1);
+		s.save(sob1);
+		s.save(af1);
+		s.save(cl1);
+		s.save(rp1);
+		s.save(flag1);
+		//s.save(res1);
+		//s.save(project);
+		//s.save(user);
+		//s.save(user1);
+		
+		t.commit();
+		s.close();
+		
+		
+		
+
+		
+		
+		
+	}
+
+}

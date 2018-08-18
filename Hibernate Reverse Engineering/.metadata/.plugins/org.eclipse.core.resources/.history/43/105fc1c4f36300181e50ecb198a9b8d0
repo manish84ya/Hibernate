@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 30 May, 2018 2:04:17 PM by Hibernate Tools 5.3.0.Beta2 --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="bt2" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.BugTracking.Bug" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="bug">
+        <id name="bugId" type="long">
+            <column name="Bug_ID"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="com.BugTracking.Milestone" embed-xml="true" fetch="select" insert="true" name="milestone" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="MileStone_ID"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="bugDescription" optimistic-lock="true" type="string" unique="false">
+            <column name="Bug_Description"/>
+        </property>
+        <property generated="never" lazy="false" name="bugTitle" optimistic-lock="true" type="string" unique="false">
+            <column name="Bug_Title"/>
+        </property>
+        <property generated="never" lazy="false" name="dueOn" optimistic-lock="true" type="string" unique="false">
+            <column name="Due_On"/>
+        </property>
+        <property generated="never" lazy="false" name="fixId" optimistic-lock="true" type="java.lang.Long" unique="false">
+            <column name="fix_id"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bugStatuses" optimistic-lock="true" sort="unsorted" table="bug_status">
+            <key on-delete="noaction">
+                <column name="Bug_ID"/>
+            </key>
+            <one-to-many class="com.BugTracking.BugStatus" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bugcomments" optimistic-lock="true" sort="unsorted" table="bugcomment">
+            <key on-delete="noaction">
+                <column name="Bug_ID"/>
+            </key>
+            <one-to-many class="com.BugTracking.Bugcomment" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="false" lazy="true" mutable="true" name="users" optimistic-lock="true" sort="unsorted" table="bugs_user">
+            <key on-delete="noaction">
+                <column name="Bug_id_fk" not-null="true"/>
+            </key>
+            <many-to-many embed-xml="true" entity-name="com.BugTracking.User" not-found="exception" unique="false">
+                <column name="User_ID_FK" not-null="true"/>
+            </many-to-many>
+        </set>
+        
+    </class>
+</hibernate-mapping>

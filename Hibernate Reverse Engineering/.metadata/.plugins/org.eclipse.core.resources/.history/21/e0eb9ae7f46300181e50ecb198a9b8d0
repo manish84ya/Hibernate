@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30 May, 2018 2:04:17 PM by Hibernate Tools 5.3.0.Beta2 -->
+<hibernate-mapping default-cascade="ALL">
+ <class catalog="bt2" name="com.BugTracking.User" table="user">
+  <id name="userId" type="long">
+   <column name="User_Id"/>
+   <generator class="assigned"/>
+  </id>
+  <many-to-one class="com.BugTracking.Milestone" fetch="select" name="milestone">
+   <column name="MileStone_ID"/>
+  </many-to-one>
+  <many-to-one class="com.BugTracking.Projects" fetch="select" name="projects">
+   <column name="Project_Id"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="firstName" type="string">
+   <column name="First_Name"/>
+  </property>
+  <property generated="never" lazy="false" name="lastName" type="string">
+   <column name="Last_Name"/>
+  </property>
+  <property generated="never" lazy="false" name="userPassword" type="string">
+   <column name="UserPassword"/>
+  </property>
+  <property generated="never" lazy="false" name="userDesignation" type="string">
+   <column name="User_Designation"/>
+  </property>
+  <property generated="never" lazy="false" name="userEmailId" type="string">
+   <column name="User_Email_ID"/>
+  </property>
+  <property generated="never" lazy="false" name="username" type="string">
+   <column name="Username"/>
+  </property>
+  <property generated="never" lazy="false" name="dateOfJoining" type="string">
+   <column name="Date_Of_Joining"/>
+  </property>
+  <set fetch="select" lazy="true" name="bugs" sort="unsorted" table="bugs_user">
+   <key>
+    <column name="User_ID_FK" not-null="true"/>
+   </key>
+   <many-to-many entity-name="com.BugTracking.Bug" unique="false">
+    <column name="Bug_id_fk" not-null="true"/>
+   </many-to-many>
+  </set>
+  <set fetch="select" lazy="true" name="events" sort="unsorted" table="event_user">
+   <key>
+    <column name="User_ID_FK" not-null="true"/>
+   </key>
+   <many-to-many entity-name="com.BugTracking.Event" unique="false">
+    <column name="Event_id_fk" not-null="true"/>
+   </many-to-many>
+  </set>
+  <set fetch="select" inverse="true" lazy="true" name="bugcomments"
+   sort="unsorted" table="bugcomment">
+   <key>
+    <column name="User_ID"/>
+   </key>
+   <one-to-many class="com.BugTracking.Bugcomment"/>
+  </set>
+  <set fetch="select" inverse="true" lazy="true"
+   name="milestonecomments" sort="unsorted" table="milestonecomment">
+   <key>
+    <column name="User_ID"/>
+   </key>
+   <one-to-many class="com.BugTracking.Milestonecomment"/>
+  </set>
+ </class>
+</hibernate-mapping>

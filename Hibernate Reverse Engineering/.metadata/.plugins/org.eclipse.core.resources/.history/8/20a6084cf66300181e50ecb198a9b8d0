@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    <property name = "connection.driver_class">com.mysql.jdbc.Driver</property>
+<property name = "dialect">org.hibernate.dialect.MySQLDialect</property>
+<property name = "connection.url">jdbc:mysql://localhost:3306/bt2</property>
+<property name = "connection.username">root</property>
+<property name = "connection.password">root</property>
+<property name="show_sql">false</property>
+<property name="hbm2ddl.auto">update</property>  
+    
+        <mapping resource="com/BugTracking/BugStatus.hbm.xml"/>
+        <mapping resource="com/BugTracking/Admin.hbm.xml"/>
+        <mapping resource="com/BugTracking/Affectedmilestone.hbm.xml"/>
+        <mapping resource="com/BugTracking/Bug.hbm.xml"/>
+        <mapping resource="com/BugTracking/Milestone.hbm.xml"/>
+        <mapping resource="com/BugTracking/Flag.hbm.xml"/>
+        <mapping resource="com/BugTracking/Severity.hbm.xml"/>
+        <mapping resource="com/BugTracking/User.hbm.xml"/>
+        <mapping resource="com/BugTracking/Bugcomment.hbm.xml"/>
+        <mapping resource="com/BugTracking/Event.hbm.xml"/>
+        <mapping resource="com/BugTracking/Milestonecomment.hbm.xml"/>
+        <mapping resource="com/BugTracking/Reproducible.hbm.xml"/>
+        <mapping resource="com/BugTracking/Projects.hbm.xml"/>
+        <mapping resource="com/BugTracking/Classification.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
